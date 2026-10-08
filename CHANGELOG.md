@@ -1,5 +1,37 @@
 # FireFlair prototype — changelog
 
+## v16.2 — 2026-10-08 — Readability: Profile Card and Q&A text
+Artifact version 1791498672-eb3d · file `fireflair-v16.2.html`
+
+Readability pass on the Profile Card, Q&A cards and other cards. No layout or colour changes.
+
+Typography rule now used on the profile:
+- Tier 1 (names, main profession, questions, answers): biggest, darkest.
+- Tier 2 (skills, interests, locations, languages, card titles, descriptions): medium size, strong contrast.
+- Tier 3 (labels, card types, XP, status): small but solid, never faint.
+- Display type (Cinzel) stays for headings, the card plate and the name. Everything a person writes about themselves is in Inter, which stays legible at small sizes. Cormorant is no longer used for profile content.
+
+Profile Card (editable, in Profile Card step 2)
+- Name: larger and bolder (Cinzel, 22px, 700).
+- Profession, skill, interest, location and language chips: Inter 13.5px; the first profession (the main one) is bold.
+- Typing fields in Inter 15px with stronger placeholders. Row labels are small but darker.
+- FF Tag line and footer address in Inter, darker and larger.
+
+Profile Card (finished: Section 5, Network tiles, profile view)
+- Main profession bigger and darker gold (#6A4F12 on light cards).
+- Row values in Inter semibold, about 1.5x the previous visible size. Labels darker.
+- FF Tag address on the black pill is larger, with less letter-spacing.
+- The FF watermark behind the card is about half as strong.
+- Mini and landscape card formats: profession and address in Inter too.
+
+Q&A cards
+- Slightly wider (176–204px). Question in Inter 16px semibold; answer Inter 17px bold. "Tap to answer" is 15px, not tiny italic.
+- Group, XP and "Answer" labels are smaller and quieter, so question and answer come first.
+
+Other cards
+- Profession / skill / qualification / experience cards, media cards and venue cards: titles in Inter bold 15px, descriptions in Inter 13px with stronger contrast, type labels raised from 6.5px to 8.5px.
+
+
 ## v16.1 — 2026-10-08 — Join the Team profile, WhatsApp sign-up, Save & Share, Section 5, invited-by Network
 Artifact version 1791497422-8086 · file `fireflair-v16.1.html`
 
