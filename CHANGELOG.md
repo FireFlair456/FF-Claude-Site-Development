@@ -1,5 +1,23 @@
 # FireFlair prototype — changelog
 
+## v16.3 — 2026-10-09 — Profession levels; public profile order + Ask a question
+Artifact version 1791501889-f4bd · file `fireflair-v16.3.html`
+
+Two focused additions: a level on each Profession Card, and a new section order for someone else's profile.
+
+Profession level (Profession Card editor)
+- New LEVEL field when creating or editing a Profession Card: five boxes, 1 Apprentice, 2 Developing, 3 Professional, 4 Expert, 5 Master. The chosen one is black/gold; tap it again to clear.
+- One short line under it: "Profession level helps FireFlair connect Masters with Apprentices for training and development."
+- Stored per profession as record.level (1–5, null until chosen); each profession has its own level. Constants: PROFESSION_LEVELS / professionLevelTitle.
+- Never shown on the Profile Card, on profession cards, or to visitors (the field only appears in the owner's editor). Purpose: later Master <-> Apprentice training and mentorship matching in FireFlair Core.
+
+Someone else's profile (PersonProfile / ProfileSections when isMe is false)
+- Section order: Media, Network, Reviews & References, Professions, then the rest (qualifications, skills, interests, work locations, languages, experience, venues). Empty sections stay hidden, as before.
+- Q&A is always the last section. "Ask a question" opens a sheet; the question becomes a Question Card on that person's profile (state.profileQuestions: { id, personId, text, askedAt, by, answer }). In this prototype it shows as "Sent to <name>"; Core needs to deliver it and supply the answer (from the person, or from FF AI using their profile).
+- Book · Review · Join moved from under the card to the very bottom, below Q&A (same behaviour, now a shared ProfileActions component).
+- Your own profile keeps its existing order.
+
+
 ## v16.2 — 2026-10-08 — Readability: Profile Card and Q&A text
 Artifact version 1791498672-eb3d · file `fireflair-v16.2.html`
 
