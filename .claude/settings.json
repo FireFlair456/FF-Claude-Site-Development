@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Artifact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/scripts/sync-published-site.sh\"",
+            "timeout": 200
+          }
+        ]
+      }
+    ]
+  }
+}
