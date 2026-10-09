@@ -1,5 +1,42 @@
 # FireFlair prototype — changelog
 
+## v16.5 — 2026-10-09 — FF AI reads CVs: extraction + review
+Artifact version 1791552281-a5e0 · file `fireflair-v16.5.html`
+
+FF AI now really reads a CV (PDF, Word, a photo or text) — every page — and turns it into editable profile suggestions. Nothing is saved until the person adds it.
+
+Why
+- The old FF AI was a keyword matcher (profileFromText) and the CV adapter was a mock that always said "not connected". That is why interests, descriptions and job history were missed and only a handful of items came back.
+
+Pipeline (section 4, SERVICES — FF AI profile extraction)
+- CV_READER.read(file): PDFs through pdf.js (pdfjs-dist 6.2.108, legacy build, loaded from jsDelivr only when a PDF is read; parsed on the page, no Worker). Text page by page in reading order, sections kept; each page is also pictured for the AI (layout, columns, scans); pictures inside the PDF are found from the drawing operations and cropped as possible profile photos. Word (.docx) is unzipped in the browser (DecompressionStream) — paragraphs, headings, bullets, tables, text boxes, headers/footers and embedded pictures. Photos of CVs go to the AI as pictures (it reads them). Text files as text. Old .doc and unknown types get a clear message.
+- CV_ADAPTER.extract(doc): two FF AI calls run side by side (work history; profile details), each with the whole CV. The CV is wrapped as untrusted data and the prompt forbids following anything written inside it. Typed "Tell us about yourself" text uses one call.
+- In this prototype FF AI is Claude through the artifact's `sample` capability (the viewer's own Claude account; no key in the page). The artifact now declares `sample` alongside `db`.
+- validateExtraction(): every item is checked against the schema (category, title, description, evidence, confidence, page, proficiency, details: employer, location, start, end, venues, level, issuer, group). Failures are counted and listed, never silently dropped.
+- buildSuggestions(): semantic de-duplication (case, punctuation, &/and, plurals, word order, bracketed notes) inside the result and against the profile. Distinct activities stay distinct (Running is not Marathon Running).
+- extractionReport(): what was read, statuses (extracted, needs confirmation, unreadable, rejected by validation, duplicates merged, already on profile, failures), per-category counts, timings. Logged to the console as "[FF AI] extraction report" and shown under "How FF AI read this".
+
+Review (ExtractionReview, used by both FF AI and the CV panel)
+- Replaces "Found N things": "FF AI found N suggestions" where N is exactly what is listed. Grouped by category with counts and Tick all / Untick all; every item can be ticked, edited (title, employer, location, dates, level, description, and where it's saved) or removed. Employment shows employer · place · dates, freelance shows its venues, each item shows the CV quote it came from, and anything not clearly stated is marked "Check this".
+- Proposed profile photo: preview, drag to move, zoom to crop, "Not me". Ticked only when the profile has no photo; otherwise it says it would replace the current one and stays unticked.
+- Name (only when the profile has none) and the CV's personal summary as About.
+- Things already on the profile are listed separately; if FF AI found details a card is missing, it can fill those EMPTY fields only (new RECORDS_FILL action). RECORDS_MERGE now uses the same semantic match so it never adds a near-duplicate card.
+- When FF AI isn't available in a view (or the viewer declines), the old matcher is used and the review says so plainly.
+- Progress with Stop; clear messages and a manual Try again for busy, failed or unreadable documents; a scanned CV in a view that can't send pictures is told so rather than returning nothing.
+
+Profile
+- New About section (profile.about) at the top of the profile, editable; shown on public profiles too.
+- Information Cards show the CV details line (employer · place · dates, or a language's level as written); the card sheet shows and edits those details (record.details, with details.type = employment / freelance / education / achievement …). Venues get their location as the address.
+- CV panel: "FF AI fills in your profile from it — PDF, Word or a photo." After upload FF AI starts reading; a saved CV has "Read with FF AI".
+
+Tested in the built page (headless Chromium, phone and desktop)
+- A synthetic two-page CV (7 jobs, freelance section with venues, interests in the summary and closing lines, WSET Level 2, flair courses, Romanian + English, education, portrait + logo) as PDF, Word and a photo; prompts recorded from the app and answered by a stand-in Claude, then replayed through the app: all 17 checks pass (all 7 jobs with details, freelance + venues, all 10 interests incl. Ironman goal, WSET, courses, languages with levels, education, About). Adding twice creates no duplicate cards and never overwrites an edit.
+- Failure cases pass: FF AI absent or declined (fallback, labelled), busy (message + manual retry, no automatic retries), one call failing (partial result, flagged), Stop, picture-only CV without vision, damaged PDF, invalid items rejected and counted, oversized document cut to fit and flagged.
+- Not testable from here: live FF AI answers in the published page (needs the viewer's consent), and the real Alexandru Gavrilas CV (not received yet).
+
+Backend
+- FireFlair-Backend gets the same contract on OpenAI as a separate pull request for Griffy (key in Render's environment only).
+
 ## v16.4 — 2026-10-09 — Q&A: green answered cards, two sides, shuffled
 Artifact version 1791549316-6309 · file `fireflair-v16.4.html`
 
