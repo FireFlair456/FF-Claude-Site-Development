@@ -1,5 +1,37 @@
 # FireFlair prototype — changelog
 
+## v16.6 — 2026-10-09 — FF AI CV reading tuned on real CVs
+Artifact version 1791554187-acd6 · file `fireflair-v16.6.html`
+
+FF AI CV extraction tuned against the five real CVs Alex supplied: Alexandru Gavrilas (regression CV), Hemant Shah, Marco (Word) and the two Mixology editions. The CVs themselves are not in this repo.
+
+What changed
+- Skills: one item per distinct skill, near-synonyms merged, and not every duty turned into a skill. On the regression CV this cut skill suggestions from 21 to 17, and on the Word CV from 39 to 32.
+- Evidence quotes never carry phone numbers, emails or street addresses (these were showing up on location items).
+- A name written in capitals on the CV ("ALEXANDRU GAVRILAS") is proposed in normal case ("Alexandru Gavrilas").
+- Prompt wording for one page / one picture ("Picture 1 shows page 1…") and the photo line in the review ("From page 1 of your CV").
+
+Regression result: Alexandru Gavrilas CV, through the app with a stand-in Claude answering the app's own prompts
+- 64 suggestions. All 13 checks pass:
+  - 7 employment entries, each with employer, title, dates, location and responsibilities.
+  - Freelance section kept separate with Soho Mews House, The Roof Gardens, 77 Nightclub and Oriole.
+  - All 10 interests (cooking, running, swimming, marathon, half marathon, shorter races, Ironman goal, drinks, team development, memorable guest experiences).
+  - 7 professions and 17 skills.
+  - WSET Wine & Spirits Level 2, plus flair/bartending courses and seminars/masterclasses.
+  - Romanian Native and English Fluent.
+  - Education.
+  - Profile summary as About.
+  - Achievements.
+  - His portrait was found inside the PDF, proposed, and saved as the profile photo.
+- 0 items rejected by validation. No duplicates when added twice.
+
+Other CVs
+- Hemant Shah (2-page PDF, no photo): 93 suggestions, including 12 jobs, 9 achievements and 4 degrees.
+- Marco (Word): 67 suggestions, including 7 jobs and 3 languages.
+- Mixology 5.1 (2 pages, logo grid): 123 suggestions, including 26 venues read from client logos (marked "check this") and a photo proposal.
+- Mixology 5.0 is read identically.
+- No errors on any of them.
+
 ## v16.5 — 2026-10-09 — FF AI reads CVs: extraction + review
 Artifact version 1791552281-a5e0 · file `fireflair-v16.5.html`
 
