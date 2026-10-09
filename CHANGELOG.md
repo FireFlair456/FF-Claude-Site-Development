@@ -1,5 +1,27 @@
 # FireFlair prototype — changelog
 
+## v16.4 — 2026-10-09 — Q&A: green answered cards, two sides, shuffled
+Artifact version 1791549316-6309 · file `fireflair-v16.4.html`
+
+Q&A section: answered questions feel like an achievement, sit on their own side, and the order changes each visit.
+
+Answered state
+- Answered Question Cards turn green (QUESTION_DONE colours) with a green outline and a large green tick badge top-right, replacing the small tick.
+- Answering a question for the first time plays a completion animation on that card: the card pops, a large green disc draws a tick, a ring pulses out with a few gold sparks (about 1.5s). Editing an existing answer doesn't replay it. Reduced-motion settings switch the animation off.
+- The green state comes from the saved answer, so it's there on every visit.
+
+Two sides
+- One row, split by an "Answered" divider: unanswered on the left, answered on the right. Labels above: "To answer · n" and "Answered · n" (tap to jump to the answered side).
+- Answering moves the card to the right side straight away and scrolls the row to it while the animation plays.
+- Empty states: "Answered questions move here." / "All answered — nice work."
+
+Order
+- Each side is shuffled independently once per visit to the Profile page (ProfilePage calls resetQuestionOrder on mount) and stays still while the person is answering. Display order only — answers and completion are never changed.
+
+Wording
+- The "Generic" question group is now labelled "Freelancer" everywhere it shows (the internal key stays "generic").
+
+
 ## v16.3 — 2026-10-09 — Profession levels; public profile order + Ask a question
 Artifact version 1791501889-f4bd · file `fireflair-v16.3.html`
 
